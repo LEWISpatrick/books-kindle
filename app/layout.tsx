@@ -12,8 +12,8 @@ import { Footer } from '@/components/footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Nizzy-Starter',
-  description: 'The best SaaS starter kit on the web 🌎 🚀 HAHA'
+  title: 'bookskindle',
+  description: 'The best Place to get your Kindle Books'
 }
 
 export default async function RootLayout({

@@ -10,38 +10,34 @@ import { useRouter } from 'next/navigation'
 // Update Tiers Here
 export const tiers = [
   {
-    name: 'Your Competitor Name',
-    price: '18.99',
+    name: 'Kindle Store',
+    price: '$1000+',
     features: [
-      'Feature 1',
-      'Feature 2',
-      'Feature 3',
-      'Feature 4',
-      'Feature 5',
-      'Feature 6',
-      'Feature 7',
-      'Feature 8',
-      'Feature 9',
-      'Feature 10'
+      'Expensive Books $1000+',
+      'Limited Access to Free Books',
+      'No Free Audiobooks',
+      'Regional Restrictions',
+      'No Customer Support',
+      'No Community',
+      'No Customization',
+      'No Early Access'
     ],
     cta: 'Get Started',
     yourProduct: false
   },
   {
-    name: 'Your Product Name',
-    priceBefore: '$19.99',
-    price: '8.99',
+    name: 'BooksKindle Premium',
+    priceBefore: '$59.99',
+    price: '29.99',
     features: [
-      'Feature 1',
-      'Feature 2',
-      'Feature 3',
-      'Feature 4',
-      'Feature 5',
-      'Feature 6',
-      'Feature 7',
-      'Feature 8',
-      'Feature 9',
-      'Feature 10'
+      'Thousands of Free Books',
+      'Thousands of Free Audiobooks',
+      'No Regional Restrictions',
+      'Lifetime updates',
+      'Customer Support',
+      'Community',
+      'Customization',
+      'Early Access'
     ],
     cta: 'Get Started',
     yourProduct: true
@@ -78,8 +74,7 @@ export const PricingCard = () => {
           Pricing
         </h2>
         <p className="text-md opacity-50 max-w-lg text-center">
-          Describe your product / service here that will impress the user & want
-          them to buy the product
+          Choose the right plan for your needs.
         </p>
       </div>
       {/* Pricing Card Display */}
@@ -117,7 +112,10 @@ export const PricingCard = () => {
                     {tier.priceBefore}
                   </span>
                 ) : null}
-                <span className="text-4xl font-bold">${tier.price}</span> /month
+<span className="text-4xl font-bold">
+  {tier.name === 'Kindle Store' ? `${tier.price}/month` : `$${tier.price} `}
+</span>
+
               </div>
               <ul className="mt-4 space-y-2.5">
                 {tier.features.map((feature, index) => (

@@ -1,5 +1,5 @@
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { RocketIcon } from 'lucide-react'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { RocketIcon } from 'lucide-react';
 
 export function AlertDemo() {
   return (
@@ -10,16 +10,15 @@ export function AlertDemo() {
           Heads up!
         </AlertTitle>
         <AlertDescription>
-          This is a demo. You can find the github repository{' '}
+          The first 50 clients (28 Left) will get an exclusive {' '}
           <a
-            className="text-primary transition duration-300"
-            href="https://github.com/NizarAbiZaher/nizzy-starter"
-            target="_blank"
+            href="#pricing"
+            className="text-primary transition duration-300 hover:underline"
           >
-            here
-          </a>
+            50%
+          </a> discount!
         </AlertDescription>
       </Alert>
     </div>
-  )
+  );
 }

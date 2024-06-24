@@ -14,27 +14,27 @@ export default function AvatarCircles({ className }: AvatarCirclesProps) {
     >
       <img
         className="h-9 w-9 rounded-full border-2 border-secondary"
-        src="/testimonials/john-doe.jpg"
+        src="/testimonials/default.jpeg"
         alt=""
       />
       <img
         className="h-9 w-9 rounded-full border-2 border-secondary"
-        src="/testimonials/john-doe.jpg"
+        src="/testimonials/woman.jpeg"
         alt=""
       />
       <img
         className="h-9 w-9 rounded-full border-2 border-secondary"
-        src="/testimonials/john-doe.jpg"
+        src="/testimonials/default.jpeg"
         alt=""
       />
       <img
         className="h-9 w-9 rounded-full border-2 border-secondary"
-        src="/testimonials/john-doe.jpg"
+        src="/testimonials/woman_3.jpeg"
         alt=""
       />
       <img
         className="h-9 w-9 rounded-full border-2 border-secondary"
-        src="/testimonials/john-doe.jpg"
+        src="/testimonials/default.jpeg"
         alt=""
       />
     </div>

@@ -7,17 +7,14 @@ import { Logo } from '@/components/logo'
 
 export const navPages = [
   {
-    title: 'Dashboard',
-    link: '/dashboard'
+    title: 'Books',
+    link: '/books' 
   },
   {
-    title: 'Pricing',
-    link: '/#pricing'
+    title: 'AudioBooks',
+    link: '/audiobooks'
   },
-  {
-    title: 'Items',
-    link: '/#items'
-  }
+
 ]
 
 export const Navbar = () => {

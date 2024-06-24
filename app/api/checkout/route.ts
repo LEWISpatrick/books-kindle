@@ -11,12 +11,14 @@ export async function POST(req: Request) {
       return new NextResponse('Unauthorized', { status: 401 })
     }
 
+    // Check if the user already has a Stripe customer ID
     const userSubscription = await db.userSubscription.findUnique({
       where: {
         userId: user.user.id
       }
     })
 
+    // If the user has a subscription, create a billing portal session
     if (userSubscription && userSubscription.stripeCustomerId) {
       const stripeSession = await stripe.billingPortal.sessions.create({
         customer: userSubscription.stripeCustomerId,
@@ -26,28 +28,24 @@ export async function POST(req: Request) {
       return new NextResponse(JSON.stringify({ url: stripeSession.url }))
     }
 
+    // Create a one-time payment session
     const stripeSession = await stripe.checkout.sessions.create({
-      success_url: process.env.APP_URL,
-      cancel_url: process.env.APP_URL,
+      success_url: `${process.env.APP_URL}/success`,
+      cancel_url: `${process.env.APP_URL}/cancel`,
       payment_method_types: ['card'],
-
-      mode: 'subscription',
+      mode: 'payment',
       billing_address_collection: 'auto',
       customer_email: user?.user.email!,
-
       line_items: [
         {
           price_data: {
             currency: 'USD',
             product_data: {
-              name: 'Your SaaS Subscription Name',
-              description: 'Saas Subscription Description'
+              name: 'Books Kindle Package',
+              description: 'Ultimate package for book lovers'
             },
-            // cost (change this to the price of your product)
-            unit_amount: 899,
-            recurring: {
-              interval: 'month'
-            }
+            // Cost in cents (e.g., $5.00)
+            unit_amount: 2999
           },
           quantity: 1
         }
@@ -56,6 +54,7 @@ export async function POST(req: Request) {
         userId: user.user.id
       }
     })
+
     return new NextResponse(JSON.stringify({ url: stripeSession.url }))
   } catch (error) {
     console.log('[STRIPE_GET]', error)
