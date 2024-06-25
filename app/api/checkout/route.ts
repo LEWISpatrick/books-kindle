@@ -57,7 +57,7 @@ export async function POST(req: Request) {
     await db.purchase.create({
       data: {
         userId: user.user.id,
-        amount: 899,
+        amount: 2999,
         createdAt: new Date(),
       }
     })
