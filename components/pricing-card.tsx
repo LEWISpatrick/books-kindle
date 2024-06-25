@@ -6,6 +6,8 @@ import { toast } from 'react-hot-toast'
 import axios from 'axios'
 import { useCurrentUser } from '@/hooks/use-current-user'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { Logo } from './logo'
 
 // Update Tiers Here
 export const tiers = [
@@ -26,7 +28,7 @@ export const tiers = [
     yourProduct: false
   },
   {
-    name: 'BooksKindle Premium',
+    name: 'Books Kindle Premium',
     priceBefore: '$59.99',
     price: '29.99',
     features: [
@@ -70,9 +72,13 @@ export const PricingCard = () => {
     <section id="pricing" className="scroll-mt-4">
       {/* Title */}
       <div className="mx-auto flex flex-col items-center pb-8">
-        <h2 className="pb-4 text-4xl font-extrabold text-foreground">
-          Pricing
-        </h2>
+      <div className="flex items-center pb-4 text-xl font-extrabold text-foreground">
+    <Link href="/">
+        <Logo />
+    </Link>
+    <span className="ml-1">Pricing</span>
+</div>
+
         <p className="text-md opacity-50 max-w-lg text-center">
           Choose the right plan for your needs.
         </p>
@@ -131,22 +137,42 @@ export const PricingCard = () => {
                     {feature}
                   </li>
                 ))}
+  {!tier.yourProduct ? '' : 
+<div className='mt-1'>
+<span className="badge badge-accent select-none bg-green-500 text-white ml-1 rounded-full p-1 text-sm">
+  Updated 26 days ago
+</span>
+</div>
+
+}
+
               </ul>
             </div>
             {/* Button */}
-            <div className="mt-6">
+            <div className="mt-6 space-y-2">
               <Button
                 disabled={!tier.yourProduct}
                 onClick={onClick}
                 className={`w-full ${tier.yourProduct && 'hover:-translate-y-1'}`}
               >
                 {tier.cta}
-                <Sparkle className="ml-1 h-4 w-4" />
-              </Button>
+               {isLoading == true ? '...' :  <Sparkle className="ml-1 h-4 w-4" />}
+               
+
+              </Button>  
+              <div className='text-sm text-center text-base-content-secondary font-medium relative'>
+            {!tier.yourProduct ? '' : 
+            <span>One-time payment, then <span className="underline">it's yours forever</span></span> }
+           
             </div>
+            </div>
+          
           </div>
         ))}
       </div>
     </section>
   )
 }
+
+
+

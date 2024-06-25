@@ -25,14 +25,10 @@ import { useEffect, useState } from 'react'
 
 export const UserButton = () => {
   const userButtonItems = [
+
     {
-      label: 'Dashboard',
-      href: '/dashboard',
-      icon: LayoutDashboard
-    },
-    {
-      label: 'Docs',
-      href: '/docs',
+      label: 'Favorite Books',
+      href: '/favoritebooks',
       icon: Book
     },
     {

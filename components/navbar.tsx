@@ -1,9 +1,17 @@
+'use client'
 import Link from 'next/link'
 import { ModeToggle } from '@/components/mode-toggle'
 import Image from 'next/image'
 import { UserButton } from '@/components/user-button'
 import { MobileSidebar } from '@/components/mobile-sidebar'
 import { Logo } from '@/components/logo'
+import { useCurrentUser } from '@/hooks/use-current-user'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+
+import { toast } from 'react-hot-toast'
+import axios from 'axios'
+
 
 export const navPages = [
   {
@@ -18,6 +26,24 @@ export const navPages = [
 ]
 
 export const Navbar = () => {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const session = useCurrentUser()
+
+
+  const onClick = async () => {
+    if (!session) {
+      toast('👇 Sign in to Access!')
+      return
+    }
+    try {
+      setIsLoading(true)
+    } catch (error) {
+      toast.error('An error occured! Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
   return (
     <nav className="top-0 w-full z-50 transition">
       <div className="max-w-6xl mx-auto px-6 py-4">
@@ -35,6 +61,7 @@ export const Navbar = () => {
                   key={index}
                   href={page.link}
                   className="flex items-center hover:text-primary hover:bg-primary/10 h-full transition duration-300 px-4 rounded-md"
+                  onClick={onClick} 
                 >
                   {page.title}
                 </Link>
