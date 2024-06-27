@@ -11,7 +11,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
   const confirmLink = `http://localhost:3000/new-verification?token=${token}`
 
   await resend.emails.send({
-    from: 'Patrick <noreply@resend.dev>',
+    from: 'BooksKindle <noreply@resend.dev>',
     to: email,
     subject: 'Confirm your email',
     html: render(LinkEmail({ token }))
@@ -27,7 +27,7 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
   const resetLink = `${process.env.APP_URL}/new-password?token=${token}`
 
   await resend.emails.send({
-    from: 'Nizar <noreply@resend.dev>',
+    from: 'BooksKindle <noreply@resend.dev>',
     to: email,
     subject: 'Reset your password',
     html: render(ResetPassword({ token }))

@@ -22,9 +22,21 @@ const Page = () => {
   }, [session])
 
   return (
-    <h2 className="text-center font-extrabold text-4xl md:text-5xl tracking-tight mb-12 md:mb-20">
-      Coming Soon...
-    </h2>
+    <div className='flex  '>
+      
+
+   
+  
+         <button
+            className=" text-4xl flex items-center hover:text-primary hover:bg-primary/10 h-full transition duration-300 px-4 rounded-md"
+            onClick={() => (window.location.href = '/upload-books')}
+          >
+            Upload Books
+          </button>
+        
+       
+    </div>
+    
   )
 }
 

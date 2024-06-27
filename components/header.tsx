@@ -29,7 +29,7 @@ export const Header = () => {
             src="https://www.youtube.com/embed/VIDEO_ID_HERE/"
             title="YouTube Video Player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            className="w-full max-w-2xl h-auto aspect-video"
+            className="w-full max-w-2xl h-auto aspect-video rounded-lg"
           ></iframe>
         </div>
       </div>

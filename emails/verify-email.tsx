@@ -51,20 +51,18 @@ export const LinkEmail = ({ token }: LinkEmailProps) => (
             marginBottom: '16px'
           }}
         >
-          your logo here
+          bookskindle          
         </Text>
 
         <Text style={footer}>
           <Link
-            href="https://nizzyabi.com"
+            href="https://bookskindle.com"
             target="_blank"
             style={{ ...link, color: '#898989' }}
           >
-            yoururl.com
+            bookskindle.com
           </Link>
-          , learn to code
-          <br />
-          && have fun doing it.
+          , Focus on Reading, not Buying books.
         </Text>
       </Container>
     </Body>

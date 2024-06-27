@@ -32,7 +32,7 @@ const Why = () => {
       <div className="w-full md:w-1/2 px-6">
         {/* Replace the src value with your actual video URL */}
         <iframe
-          className="w-full h-64 md:h-full"
+          className="w-full h-64 md:h-full rounded-lg"
           src="https://www.youtube.com/embed/VIDEO_ID_HERE"
           title="Why Books Kindle Video"
           frameBorder="0"

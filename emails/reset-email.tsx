@@ -60,21 +60,19 @@ export const ResetPassword = ({ token }: ResetPasswordProps) => (
             fontWeight: 'bold'
           }}
         >
-          <span>nizzy</span>
-          <span style={gradientStyle}>abi</span>
+      
+          <span style={gradientStyle}>BooksKindle</span>
         </Text>
 
         <Text style={footer}>
           <Link
-            href="https://nizzyabi.com"
+            href="https://bookskindle.com"
             target="_blank"
             style={{ ...link, color: '#898989' }}
           >
-            nizzyabi.com
+            bookskindle.com
           </Link>
-          , learn to code
-          <br />
-          && have fun doing it.
+          , Focus on Reading, not Buying books.
         </Text>
       </Container>
     </Body>
