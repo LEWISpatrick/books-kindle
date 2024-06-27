@@ -5,7 +5,6 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 enum UserRole {
@@ -33,7 +32,6 @@ model User {
   role          UserRole  @default(USER)
   accounts      Account[]
   createdAt     DateTime  @default(now())
-  subscriptions UserSubscription[]
   purchases     Purchase[]
   stripeCustomer StripeCustomer?
   books         Book[]
