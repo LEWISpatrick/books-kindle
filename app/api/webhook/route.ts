@@ -28,11 +28,16 @@ export async function POST(req: Request) {
       return new NextResponse('No user id found', { status: 400 })
     }
 
+    // Check if session.amount_total is not null
+    if (session.amount_total === null) {
+      return new NextResponse('Amount total is null', { status: 400 })
+    }
+
     // Record the purchase in the database
     await db.purchase.create({
       data: {
         userId: session.metadata.userId,
-        amount : session.amount_total,
+        amount: session.amount_total,
         createdAt: new Date(),
       }
     })
