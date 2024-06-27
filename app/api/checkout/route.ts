@@ -40,9 +40,10 @@ export async function POST(req: Request) {
           price_data: {
             currency: 'USD',
             product_data: {
-              name: 'Books Kindle Premium',
-              description: 'Thousands of Free Books'
+              name: 'Books Kindle Package',
+              description: 'Ultimate package for book lovers'
             },
+            // Cost in cents (e.g., $5.00)
             unit_amount: 2999
           },
           quantity: 1
@@ -57,7 +58,7 @@ export async function POST(req: Request) {
     await db.purchase.create({
       data: {
         userId: user.user.id,
-        amount: 899,
+        amount: 2999,
         createdAt: new Date(),
       }
     })

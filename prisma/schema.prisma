@@ -5,6 +5,7 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum UserRole {
@@ -32,6 +33,7 @@ model User {
   role          UserRole  @default(USER)
   accounts      Account[]
   createdAt     DateTime  @default(now())
+  subscriptions UserSubscription[]
   purchases     Purchase[]
   stripeCustomer StripeCustomer?
   books         Book[]
@@ -105,5 +107,6 @@ model Book {
   category      BookCategory
   createdAt     DateTime      @default(now())
   userId        String        
-  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
