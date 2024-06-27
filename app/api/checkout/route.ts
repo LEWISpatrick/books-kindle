@@ -67,7 +67,7 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error('[STRIPE_CHECKOUT_ERROR]', error)
 
-    if (error.type === 'StripeInvalidRequestError') {
+    if (error === 'StripeInvalidRequestError') {
       return new NextResponse('Invalid request to Stripe API', { status: 400 })
     }
 
