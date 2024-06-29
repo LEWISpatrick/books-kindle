@@ -11,26 +11,35 @@ export async function POST(req: Request) {
       return new NextResponse('Unauthorized', { status: 401 })
     }
 
-    // Check if the user has a StripeCustomer record
-    const stripeCustomer = await db.stripeCustomer.findUnique({
+    const appUrl = process.env.APP_URL
+    if (!appUrl) {
+      console.error('APP_URL is not defined')
+      return new NextResponse('Internal Server Error', { status: 500 })
+    }
+
+    // Check if the user has an existing purchase
+    const purchase = await db.purchase.findFirst({
       where: {
         userId: user.user.id
+      },
+      include: {
+        stripeCustomer: true
       }
     })
 
-    if (stripeCustomer && stripeCustomer.stripeCustomerId) {
+    if (purchase && purchase.stripeCustomer?.stripeCustomerId) {
       const stripeSession = await stripe.billingPortal.sessions.create({
-        customer: stripeCustomer.stripeCustomerId,
-        return_url: process.env.APP_URL
+        customer: purchase.stripeCustomer.stripeCustomerId,
+        return_url: appUrl
       })
 
-      return new NextResponse(JSON.stringify({ url: stripeSession.url }))
+      return new NextResponse(JSON.stringify({ url: stripeSession.url }), { status: 200 })
     }
 
     // Create a checkout session for a one-time payment
     const stripeSession = await stripe.checkout.sessions.create({
-      success_url: process.env.APP_URL,
-      cancel_url: process.env.APP_URL,
+      success_url: appUrl,
+      cancel_url: appUrl,
       payment_method_types: ['card'],
       mode: 'payment',
       billing_address_collection: 'auto',
@@ -43,7 +52,6 @@ export async function POST(req: Request) {
               name: 'Books Kindle Package',
               description: 'Ultimate package for book lovers'
             },
-            // Cost in cents (e.g., $5.00)
             unit_amount: 2999
           },
           quantity: 1
@@ -54,23 +62,33 @@ export async function POST(req: Request) {
       }
     })
 
+    // Create or connect the StripeCustomer
+    let stripeCustomer = purchase?.stripeCustomer
+    if (!stripeCustomer) {
+      const newStripeCustomer = await stripe.customers.create({
+        email: user.user.email || undefined
+      })
+      stripeCustomer = await db.stripeCustomer.create({
+        data: {
+          userId: user.user.id,
+          stripeCustomerId: newStripeCustomer.id
+        }
+      })
+    }
+
     // Record the purchase in the database
     await db.purchase.create({
       data: {
         userId: user.user.id,
         amount: 2999,
+        stripeCustomerId: stripeCustomer.id,
         createdAt: new Date(),
       }
     })
 
-    return new NextResponse(JSON.stringify({ url: stripeSession.url }))
+    return new NextResponse(JSON.stringify({ url: stripeSession.url }), { status: 200 })
   } catch (error) {
-    console.error('[STRIPE_CHECKOUT_ERROR]', error)
-
-    if (error === 'StripeInvalidRequestError') {
-      return new NextResponse('Invalid request to Stripe API', { status: 400 })
-    }
-
+    console.error(error)
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 }
