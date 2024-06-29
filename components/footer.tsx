@@ -11,7 +11,7 @@ export const Footer = () => {
             <Logo />
           </Link>
           <span className="text-sm">
-            &copy; 2024 YourCompany. All rights reserved.
+            &copy; 2024 BooksKindle. All rights reserved.
           </span>
           <Link href='privacy-policy'>
 
