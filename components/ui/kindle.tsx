@@ -9,13 +9,13 @@ const Kindle: React.FC = () => {
   };
 
   return (
-    <div className="w-full sm:w-80 bg-gray-500 p-2 rounded-lg shadow-lg">
+    <div className="w-full sm:w-80 bg-gray-700 p-2 rounded-lg shadow-lg">
       <div className="bg-gray-800 p-4 border-t border-l border-r border-black rounded-t-lg">
         <div className="bg-opacity-75 rounded-t-lg">
           <div className="flex mb-3 sm:flex-wrap">
             <div
               className={`sm:flex-1 text-center p-2 flex items-center justify-center space-x-2 ${
-                activeTab === 1 ? 'bg-gray-700' : 'bg-gray-600'
+                activeTab === 1 ? 'bg-gray-800' : 'bg-gray-700'
               } cursor-pointer`}
               onClick={() => handleTabClick(1)}
             >
@@ -25,7 +25,7 @@ const Kindle: React.FC = () => {
           
             <div
               className={`sm:flex-1 text-center p-2 flex items-center justify-center space-x-2 ${
-                activeTab === 2 ? 'bg-gray-700' : 'bg-gray-600'
+                activeTab === 2 ? 'bg-gray-800' : 'bg-gray-700'
               } cursor-pointer`}
               onClick={() => handleTabClick(2)}
             >
@@ -93,7 +93,7 @@ const Kindle: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-gray-500 text-white text-center p-4 rounded-b-lg">
+      <div className="bg-gray-700 text-white text-center p-4 rounded-b-lg">
         <div className="text-xl font-semibold">Kindle</div>
       </div>
     </div>
