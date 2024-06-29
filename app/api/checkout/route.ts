@@ -27,6 +27,7 @@ export async function POST(req: Request) {
       }
     })
 
+    // If purchase exists, redirect to the Stripe billing portal
     if (purchase && purchase.stripeCustomer?.stripeCustomerId) {
       const stripeSession = await stripe.billingPortal.sessions.create({
         customer: purchase.stripeCustomer.stripeCustomerId,
@@ -88,7 +89,7 @@ export async function POST(req: Request) {
 
     return new NextResponse(JSON.stringify({ url: stripeSession.url }), { status: 200 })
   } catch (error) {
-    console.error(error)
+    console.error('Error processing the purchase:', error)
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 }
