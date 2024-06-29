@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Logo } from '@/components/logo'
+import { FileLock } from 'lucide-react';
 
 export const Footer = () => {
   return (
@@ -12,6 +13,11 @@ export const Footer = () => {
           <span className="text-sm">
             &copy; 2024 YourCompany. All rights reserved.
           </span>
+          <Link href='privacy-policy'>
+
+     <FileLock/>
+       
+          </Link>
         </div>
       </div>
     </footer>

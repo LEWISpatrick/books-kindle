@@ -14,7 +14,7 @@ const Page = () => {
       <div className="mb-8">
         <h2 className="text-2xl font-bold mb-4">Information We Collect</h2>
         <p className="mb-4">
-          - Personal Information: When you make a one-time payment of $29.99 to access our platform, we collect personal information such as your name, email address, and payment details (processed securely through our payment gateway).
+          - Personal Information: When you make a one-time payment of $29.99 to access our platform, we collect personal information such as your name, email address, and payment details (processed securely through Stripe).
         </p>
         <p className="mb-4">
           - Usage Information: We also collect usage information automatically when you use our services, such as device information (e.g., IP address, browser type, operating system) and log data (e.g., pages visited, time spent on pages).
