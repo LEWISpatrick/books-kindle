@@ -25,27 +25,32 @@ const Kindle: React.FC = () => {
   };
 
   return (
-    <div className="w-full sm:w-80 bg-gray-500 p-2 rounded-lg shadow-lg">
-      <div className="bg-gray-900 p-4 border-t border-l border-r border-black rounded-t-2xl">
-        <div className="bg-opacity-75 rounded-t-lg">
-          <div className="flex mb-3 sm:flex-wrap">
-            <Button
-              className={`sm:flex-1 text-center p-2 flex items-center justify-center space-x-2  cursor-pointer`}
-              onClick={() => handleTabClick(1)}
-            >
-              <Home />
-              <span className="hidden sm:inline">Home</span>
-            </Button>
-
-            <Button
-              className={`ml-2 sm:flex-1 text-center p-2 flex items-center justify-center space-x-2 cursor-pointer`}
-              onClick={() => handleTabClick(1)}
-            >
-              <ArrowLeft />
-              <span className="hidden sm:inline">Back</span>
-            </Button>
+    <div className="w-full sm:w-80 bg-gray-700 p-2 rounded-lg shadow-lg">
+    <div className="bg-gray-800 p-4 border-t border-l border-r border-black rounded-t-lg">
+      <div className="bg-opacity-75 rounded-t-lg">
+        <div className="flex mb-3 sm:flex-wrap">
+          <div
+            className={`sm:flex-1 text-center p-2 flex items-center justify-center space-x-2 ${
+              activeTab === 1 ? 'bg-gray-700' : 'bg-gray-800'
+            } cursor-pointer`}
+            onClick={() => handleTabClick(1)}
+          >
+            <Home />
+            <span className="hidden sm:inline">Home</span>
           </div>
+        
+          <div
+            className={`sm:flex-1 text-center p-2 flex items-center justify-center space-x-2 ${
+              activeTab === 2 ? 'bg-gray-700' : 'bg-gray-800'
+            } cursor-pointer`}
+            onClick={() => handleTabClick(2)}
+          >
+            <Settings />
+            <span className="hidden sm:inline">Settings</span>
+          </div>
+        
         </div>
+      </div>
 
         <div className="p-4 h-96 flex flex-col justify-start items-center border-b ">
           {activeTab === 1 && !selectedBook && (
@@ -90,7 +95,7 @@ const Kindle: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-gray-500 text-white text-center p-4 rounded-b-lg">
+      <div className="bg-gray-700 text-white text-center p-4 rounded-b-lg">
         <div className="text-xl font-semibold">Kindle</div>
       </div>
     </div>
