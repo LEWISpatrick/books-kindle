@@ -8,6 +8,7 @@ export async function POST(req: Request) {
     const user = await auth()
 
     if (!user || !user.user.id) {
+      console.error('Authentication failed or user ID is missing.')
       return new NextResponse('Unauthorized', { status: 401 })
     }
 
@@ -34,6 +35,7 @@ export async function POST(req: Request) {
         return_url: appUrl
       })
 
+      console.log(`Redirecting to Stripe billing portal: ${stripeSession.url}`)
       return new NextResponse(JSON.stringify({ url: stripeSession.url }), { status: 200 })
     }
 
@@ -63,6 +65,8 @@ export async function POST(req: Request) {
       }
     })
 
+    console.log('Stripe checkout session created:', stripeSession.id)
+
     // Create or connect the StripeCustomer
     let stripeCustomer = purchase?.stripeCustomer
     if (!stripeCustomer) {
@@ -75,6 +79,8 @@ export async function POST(req: Request) {
           stripeCustomerId: newStripeCustomer.id
         }
       })
+
+      console.log('New Stripe customer created:', newStripeCustomer.id)
     }
 
     // Record the purchase in the database
@@ -86,6 +92,8 @@ export async function POST(req: Request) {
         createdAt: new Date(),
       }
     })
+
+    console.log('Purchase recorded in the database for user:', user.user.id)
 
     return new NextResponse(JSON.stringify({ url: stripeSession.url }), { status: 200 })
   } catch (error) {

@@ -30,7 +30,7 @@ const Kindle: React.FC = () => {
       <div className="bg-opacity-75 rounded-t-lg">
         <div className="flex mb-3 sm:flex-wrap">
           <div
-            className={`sm:flex-1 text-center p-2 flex items-center justify-center space-x-2 ${
+            className={`sm:flex-1 text-center p-2 flex items-center rounded-lg justify-center space-x-2 ${
               activeTab === 1 ? 'bg-gray-700' : 'bg-gray-800'
             } cursor-pointer`}
             onClick={() => handleTabClick(1)}
@@ -40,7 +40,7 @@ const Kindle: React.FC = () => {
           </div>
         
           <div
-            className={`sm:flex-1 text-center p-2 flex items-center justify-center space-x-2 ${
+            className={`sm:flex-1 text-center p-2 flex items-center justify-center rounded-lg space-x-2 ${
               activeTab === 2 ? 'bg-gray-700' : 'bg-gray-800'
             } cursor-pointer`}
             onClick={() => handleTabClick(2)}
