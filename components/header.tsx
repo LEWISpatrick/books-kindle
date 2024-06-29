@@ -1,7 +1,9 @@
+'use client'
 import { Sparkles } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from './ui/button'
+import Kindle from './ui/kindle'
 
 export const Header = () => {
   return (
@@ -25,12 +27,10 @@ export const Header = () => {
           </div>
         </div>
         <div className="flex items-center justify-center rounded-lg overflow-hidden">
-          <iframe
-            src="https://www.youtube.com/embed/VIDEO_ID_HERE/"
-            title="YouTube Video Player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            className="w-full max-w-2xl h-auto aspect-video rounded-lg"
-          ></iframe>
+          <Kindle
+
+            
+          ></Kindle>
         </div>
       </div>
     </div>

@@ -10,7 +10,6 @@ import { ThemeProvider } from 'next-themes'
 export default function Home() {
   return (
     <>
-    <ThemeProvider attribute="class">
     <main className="w-full max-w-6xl px-6 space-y-40">
         <Header />
         <Tired/>
@@ -20,7 +19,6 @@ export default function Home() {
         <Testimonials />
       </main>
       <Footer />
-    </ThemeProvider>
  
     </>
   )

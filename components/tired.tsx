@@ -7,9 +7,8 @@ import MobileRepeat from '@/public/mobile-repeat.png';
 import { useTheme } from 'next-themes';
 
 export const Tired = () => {
-  const { theme } = useTheme();
 
-  const cardBg = theme === 'dark' ? 'bg-[#121212]' : 'bg-white';
+  const cardBg = 'bg-[#121212]' 
 
   return (
     <div className="mx-auto px-4 py-10 md:px-20 md:py-20">
