@@ -12,12 +12,12 @@ type FormData = {
   imageUrl: string;
   downloadLink: string;
   category: BookCategory;
-  
 };
 
-export default function UploadBook({ userId }: { userId: string }) {
+export default function UploadBook() {
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
   const router = useRouter();
+  const userId = "yourUserId"; // Replace this with actual userId fetching logic
 
   const onSubmit = async (data: FormData) => {
     try {
