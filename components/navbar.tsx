@@ -1,6 +1,5 @@
 'use client'
 import Link from 'next/link'
-import { ModeToggle } from '@/components/mode-toggle'
 import Image from 'next/image'
 import { UserButton } from '@/components/user-button'
 import { MobileSidebar } from '@/components/mobile-sidebar'
@@ -66,7 +65,6 @@ export const Navbar = () => {
               ))}
             </div>
             <div className="flex h-full gap-4">
-              <ModeToggle />
               <UserButton />
             </div>
           </div>
