@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { useCurrentUser } from '@/hooks/use-current-user'
 import { signOut } from 'next-auth/react'
 import Image from 'next/image'
-import { ModeToggle } from '@/components/mode-toggle'
 import { Logo } from '@/components/logo'
 
 const sidebarPages = [
@@ -33,9 +32,7 @@ export const Sidebar = ({ closeSidebar }: SidebarProps) => {
       <Link href="/" onClick={closeSidebar}>
         <Logo />
       </Link>
-      <div className="flex pt-4">
-        <ModeToggle />
-      </div>
+
       <div className=" pt-3">
         <div className="space-y-4">
           <div className="ml-2">
