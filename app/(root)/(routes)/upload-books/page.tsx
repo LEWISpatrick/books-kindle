@@ -12,7 +12,7 @@ type FormData = {
   imageUrl: string;
   downloadLink: string;
   category: BookCategory;
-  userId: string; // Add userId to the form data type
+  
 };
 
 export default function UploadBook({ userId }: { userId: string }) {
