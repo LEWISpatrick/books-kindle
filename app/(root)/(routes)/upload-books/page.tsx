@@ -1,3 +1,5 @@
+// components/UploadBook.tsx
+
 'use client'
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
@@ -10,9 +12,10 @@ type FormData = {
   imageUrl: string;
   downloadLink: string;
   category: BookCategory;
+  userId: string; // Add userId to the form data type
 };
 
-export default function UploadBook() {
+export default function UploadBook({ userId }: { userId: string }) {
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
   const router = useRouter();
 
@@ -23,7 +26,7 @@ export default function UploadBook() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, userId }), // Include userId in the request body
       });
       router.push('/books');
     } catch (error) {
@@ -70,7 +73,7 @@ export default function UploadBook() {
         </div>
         <button type="submit" className="w-full bg-blue-600 text-white py-2 px-4 rounded-md">Upload Book</button>
       </form>
-          
+
       <div className="mt-10">
         <h2 className="text-xl font-bold mb-5">Don't know how to upload a book?</h2>
         <p className="mb-5">Watch the video below:</p>
