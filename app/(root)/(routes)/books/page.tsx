@@ -97,6 +97,9 @@ export default function Home() {
                 <span>Mystery</span>
               </Button>
         </button>
+      
+
+  
         {/* Add more genre buttons as needed */}
       </div>
       <div className="flex mb-4">
