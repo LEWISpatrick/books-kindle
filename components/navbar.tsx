@@ -17,7 +17,10 @@ export const navPages = [
     title: 'Books',
     link: '/books' 
   },
-  
+  {
+    title: 'Convert pdf',
+    link: '/convert' 
+  },
 
 
 ]
