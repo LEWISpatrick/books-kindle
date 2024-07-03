@@ -1,5 +1,6 @@
 // pages/books.tsx
 'use client'
+// pages/books.tsx
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
@@ -17,9 +18,9 @@ interface Book {
     };
   };
   accessInfo?: {
-    epub?: {
+    pdf?: {
       isAvailable?: boolean;
-      acsTokenLink?: string;
+      downloadLink?: string;
     };
   };
 }
@@ -50,7 +51,7 @@ const Books = () => {
   };
 
   const handleSearch = () => {
-    if (searchTerm.trim() === '') return; // Don't search if the search term is empty
+    if (searchTerm.trim() === '') return;
     axios
       .get(`https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${GOOGLE_BOOKS_API_KEY}`)
       .then(response => {
@@ -83,6 +84,20 @@ const Books = () => {
     if (searchInputRef.current) {
       searchInputRef.current.focus();
     }
+  }, []);
+
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        closeBookDetails();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
   }, []);
 
   return (
@@ -163,7 +178,7 @@ const Books = () => {
       </div>
       {selectedBook && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center">
-          <div ref={selectedBookRef} className="bg-white rounded-lg shadow-md overflow-hidden p-6 max-w-md w-full max-h-96 overflow-y-auto">
+          <div ref={selectedBookRef} className="bg-white rounded-lg shadow-md overflow-hidden p-6 w-full max-h-full overflow-y-auto">
             <button className="absolute top-2 right-2 text-gray-600 hover:text-gray-900" onClick={closeBookDetails}>
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -181,12 +196,13 @@ const Books = () => {
               <div className="ml-4 flex-1">
                 <p className="text-gray-600 mb-2">{selectedBook.volumeInfo.authors?.join(', ')}</p>
                 <p className="text-gray-700">{selectedBook.volumeInfo.description}</p>
-                {selectedBook.accessInfo?.epub?.isAvailable && selectedBook.accessInfo.epub.acsTokenLink && (
+                {selectedBook.accessInfo?.pdf?.isAvailable && selectedBook.accessInfo.pdf.downloadLink && (
                   <a
-                    href={selectedBook.accessInfo.epub.acsTokenLink}
+                    href={selectedBook.accessInfo.pdf.downloadLink}
                     className="text-blue-500 hover:underline block mt-4"
+                    download={`${selectedBook.volumeInfo.title}.pdf`}
                   >
-                    Download EPUB
+                    Download PDF
                   </a>
                 )}
               </div>
@@ -199,3 +215,4 @@ const Books = () => {
 };
 
 export default Books;
+
