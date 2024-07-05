@@ -43,10 +43,10 @@ const Kindle: React.FC = () => {
             className={`sm:flex-1 text-center p-2 flex items-center justify-center space-x-2 ${
               activeTab === 2 ? 'bg-foreground/10' : 'bg-foreground/5'
             } cursor-pointer`}
-            onClick={() => handleTabClick(2)}
+            onClick={() => handleTabClick(1)}
           >
-            <Settings />
-            <span className="hidden sm:inline">Settings</span>
+            <ArrowLeft />
+            <span className="hidden sm:inline">Back</span>
           </div>
         
         </div>
