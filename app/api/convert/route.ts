@@ -6,7 +6,6 @@ import path from 'path';
 import multer from 'multer';
 import { NextApiResponse as ExpressResponse } from 'next';
 import { Request } from 'express';
-import { Response } from 'express';
 
 const CLOUDCONVERT_API_KEY = 'YOUR_CLOUDCONVERT_API_KEY';
 
@@ -19,14 +18,8 @@ const upload = multer({
     dest: './public/uploads', // Destination folder for uploaded files
 });
 
-export const config = {
-    api: {
-        bodyParser: false, // Disables automatic body parsing, handled by multer
-    },
-};
-
 // API handler
-export default async function handler(req: NextApiRequestWithFormData, res: Response<any>) {
+export default async function handler(req: NextApiRequestWithFormData, res: NextApiResponse<any>) {
     if (req.method !== 'POST') {
         return res.status(405).json({ message: 'Method Not Allowed' });
     }
