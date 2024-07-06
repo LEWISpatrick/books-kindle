@@ -20,6 +20,10 @@ interface Book {
       isAvailable?: boolean;
       downloadLink?: string;
     };
+    epub?: {
+      isAvailable?: boolean;
+      acsTokenLink?: string;
+    };
   };
 }
 
@@ -185,19 +189,32 @@ const Books = () => {
               <div className="ml-4 flex-1">
                 <p className="text-gray-600 mb-2">{selectedBook.volumeInfo.authors?.join(', ')}</p>
                 <p className="text-gray-700">{selectedBook.volumeInfo.description}</p>
-                {selectedBook.accessInfo?.pdf?.isAvailable && selectedBook.accessInfo.pdf.downloadLink && (
+                {selectedBook.accessInfo?.pdf?.isAvailable &&  (
+                     <div className="absolute flex items-center space-x-0 mt-4">
                   <a
                     href={selectedBook.accessInfo.pdf.downloadLink}
-                    className="text-blue-500 hover:underline block mt-4"
+                    className="text-yellow-500 hover:underline block "
                     download={`${selectedBook.volumeInfo.title}.pdf`}
                   >
                     Download PDF
+                  </a>  
+                     <Gem className="h-4 w-6 text-yellow-500" />
+                   </div>
+                
+                )}
+                 {selectedBook.accessInfo?.epub?.isAvailable && (
+                     <div className="absolute flex items-center space-x-0 mt-10">
+                     <a href={selectedBook.accessInfo.epub.acsTokenLink} className="text-yellow-500 hover:underline">
+                    Download EPUB
                   </a>
+                    <Gem className="h-4 w-6 text-yellow-500" />
+            </div>
+               
+
                 )}
               </div>
-              <div className="absolute top-2 left-2">
-                <Gem className="h-6 w-6 text-yellow-500" />
-              </div>
+           
+
             </div>
           </div>
         </div>
