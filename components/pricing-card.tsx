@@ -54,8 +54,8 @@ export const PricingCard = () => {
 
   const onClick = async () => {
     if (!session) {
-      toast('👇 Sign in to purchase!')
-      router.push('/login')
+      toast('👇 Sign Up to purchase!')
+      router.push('/register')
       return
     }
     try {

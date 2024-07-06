@@ -1,8 +1,22 @@
+'use client'
 // src/why.js
 import React from 'react';
 import { FaCheckCircle } from 'react-icons/fa';
+import YouTube from 'react-youtube';
 
 const Why = () => {
+  const videoOption = {
+    playerVars: {
+      autoplay: 0,
+      controls: 1,
+      rel: 0,
+      showinfo: 0,
+      mute: 0,
+      loop: 1,
+      start: 0,
+    },
+  };
+
   return (
     <section className="flex flex-col md:flex-row justify-center items-center py-8">
       {/* Left Column: Text Content */}
@@ -30,14 +44,14 @@ const Why = () => {
 
       {/* Right Column: Video */}
       <div className="w-full md:w-1/2 px-6">
-        {/* Replace the src value with your actual video URL */}
-        <iframe
+
+        <YouTube
+          opts={videoOption}
           className="w-full h-64 md:h-full rounded-lg"
-          src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+          videoId="8e2t4u4F5XE"
+          
           title="Why Books Kindle Video"
-          frameBorder="0"
-          allowFullScreen
-        ></iframe>
+        />
       </div>
     </section>
   );

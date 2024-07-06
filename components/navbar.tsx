@@ -5,7 +5,7 @@ import { UserButton } from '@/components/user-button'
 import { MobileSidebar } from '@/components/mobile-sidebar'
 import { Logo } from '@/components/logo'
 import { useCurrentUser } from '@/hooks/use-current-user'
-import { useRouter } from 'next/router'
+import router, { useRouter } from 'next/router'
 import { useState } from 'react'
 
 import { toast } from 'react-hot-toast'
@@ -34,7 +34,9 @@ export const Navbar = () => {
   const onClick = async () => {
     if (!session) {
       toast('👇 Sign in to Access!')
+      router.push('/register')
       return
+      
     }
     try {
       setIsLoading(true)
