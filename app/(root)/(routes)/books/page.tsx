@@ -1,11 +1,9 @@
-// pages/books.tsx
 'use client'
 // pages/books.tsx
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
-import { Sparkles } from 'lucide-react';
-import { Search } from 'lucide-react';
+import { Sparkles, Search, Gem } from 'lucide-react';
 
 interface Book {
   id: string;
@@ -76,10 +74,6 @@ const Books = () => {
     setSelectedBook(null);
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   useEffect(() => {
     if (searchInputRef.current) {
       searchInputRef.current.focus();
@@ -105,36 +99,28 @@ const Books = () => {
       <h1 className="text-2xl font-bold mb-4">Books</h1>
       <div className="flex mb-4 space-x-4 overflow-x-auto">
         <button
-          className={`px-3 py-1 rounded-lg ${
-            selectedGenre === 'fiction' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
-          }`}
+          className={`px-3 py-1 rounded-lg ${selectedGenre === 'fiction' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
           onClick={() => setSelectedGenre('fiction')}
         >
           <Sparkles className="h-5 w-5" />
           <span>Fiction</span>
         </button>
         <button
-          className={`px-3 py-1 rounded-lg ${
-            selectedGenre === 'drama' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
-          }`}
+          className={`px-3 py-1 rounded-lg ${selectedGenre === 'drama' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
           onClick={() => setSelectedGenre('drama')}
         >
           <Sparkles className="h-5 w-5" />
           <span>Drama</span>
         </button>
         <button
-          className={`px-3 py-1 rounded-lg ${
-            selectedGenre === 'romance' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
-          }`}
+          className={`px-3 py-1 rounded-lg ${selectedGenre === 'romance' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
           onClick={() => setSelectedGenre('romance')}
         >
           <Sparkles className="h-5 w-5" />
           <span>Romance</span>
         </button>
         <button
-          className={`px-3 py-1 rounded-lg ${
-            selectedGenre === 'mystery' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
-          }`}
+          className={`px-3 py-1 rounded-lg ${selectedGenre === 'mystery' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
           onClick={() => setSelectedGenre('mystery')}
         >
           <Sparkles className="h-5 w-5" />
@@ -158,7 +144,7 @@ const Books = () => {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {books.map((book) => (
-          <div key={book.id} className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer">
+          <div key={book.id} className="relative bg-white rounded-lg shadow-md overflow-hidden cursor-pointer">
             <div onClick={() => showBookDetails(book)}>
               {book.volumeInfo.imageLinks?.thumbnail && (
                 <img
@@ -172,13 +158,16 @@ const Books = () => {
                 <p className="text-gray-600 mb-2">{book.volumeInfo.authors?.join(', ')}</p>
                 <p className="text-gray-700">{book.volumeInfo.description?.substring(0, 150)}...</p>
               </div>
+              <div className="absolute bottom-2 right-2">
+                <Gem className="h-5 w-5 text-yellow-500" />
+              </div>
             </div>
           </div>
         ))}
       </div>
       {selectedBook && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center">
-          <div ref={selectedBookRef} className="bg-white rounded-lg shadow-md overflow-hidden p-6 w-full max-h-full overflow-y-auto">
+          <div ref={selectedBookRef} className="relative bg-white rounded-lg shadow-md overflow-hidden p-6 w-full max-h-full overflow-y-auto">
             <button className="absolute top-2 right-2 text-gray-600 hover:text-gray-900" onClick={closeBookDetails}>
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -206,6 +195,9 @@ const Books = () => {
                   </a>
                 )}
               </div>
+              <div className="absolute top-2 left-2">
+                <Gem className="h-6 w-6 text-yellow-500" />
+              </div>
             </div>
           </div>
         </div>
@@ -215,4 +207,3 @@ const Books = () => {
 };
 
 export default Books;
-
