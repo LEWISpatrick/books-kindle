@@ -24,7 +24,7 @@ interface Book {
       acsTokenLink?: string;
     };
   };
-  internetArchiveLink?: string; // Change this to string | undefined
+  internetArchiveLink?: string | null; // Allow null
 }
 
 const GOOGLE_BOOKS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY;
