@@ -6,6 +6,9 @@ import YouTube from 'react-youtube';
 
 const Why = () => {
   const videoOption = {
+    height: '290',
+     width:  '540',
+
     playerVars: {
       autoplay: 0,
       controls: 1,
@@ -43,16 +46,13 @@ const Why = () => {
       </div>
 
       {/* Right Column: Video */}
-      <div className="w-full md:w-1/2 px-6 flex justify-center">
-        <div className="hidden md:block w-10 md:w-64">
+
           <YouTube
             opts={videoOption}
-            className="w-full h-32 md:h-40 rounded-lg"
             videoId="8e2t4u4F5XE"
             title="Why Books Kindle Video"
           />
-        </div>
-      </div>
+
     </section>
   );
 };

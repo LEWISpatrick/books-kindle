@@ -1,5 +1,4 @@
-'use client'
-// pages/books.tsx
+'use client';
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
@@ -25,6 +24,7 @@ interface Book {
       acsTokenLink?: string;
     };
   };
+  internetArchiveLink?: string; // Change this to string | undefined
 }
 
 const GOOGLE_BOOKS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY;
@@ -70,8 +70,23 @@ const Books = () => {
     }
   };
 
-  const showBookDetails = (book: Book) => {
-    setSelectedBook(book);
+  const fetchInternetArchivePDF = async (bookTitle: string): Promise<string | null> => {
+    try {
+      const response = await axios.get(`https://archive.org/advancedsearch.php?q=title:(${bookTitle})&fl[]=identifier&output=json`);
+      const itemId = response.data.response.docs[0]?.identifier;
+      if (itemId) {
+        return `https://archive.org/download/${itemId}/${itemId}.pdf`;
+      }
+      return null;
+    } catch (error) {
+      console.error('Error fetching Internet Archive PDF:', error);
+      return null;
+    }
+  };
+
+  const showBookDetails = async (book: Book) => {
+    const internetArchiveLink = await fetchInternetArchivePDF(book.volumeInfo.title.toLowerCase());
+    setSelectedBook({ ...book, internetArchiveLink });
   };
 
   const closeBookDetails = () => {
@@ -189,32 +204,39 @@ const Books = () => {
               <div className="ml-4 flex-1">
                 <p className="text-gray-600 mb-2">{selectedBook.volumeInfo.authors?.join(', ')}</p>
                 <p className="text-gray-700">{selectedBook.volumeInfo.description}</p>
-                {selectedBook.accessInfo?.pdf?.isAvailable &&  (
-                     <div className="absolute flex items-center space-x-0 mt-4">
-                  <a
-                    href={selectedBook.accessInfo.pdf.downloadLink}
-                    className="text-yellow-500 hover:underline block "
-                    download={`${selectedBook.volumeInfo.title}.pdf`}
-                  >
-                    Download PDF
-                  </a>  
-                     <Gem className="h-4 w-6 text-yellow-500" />
-                   </div>
-                
-                )}
-                 {selectedBook.accessInfo?.epub?.isAvailable && (
-                     <div className="absolute flex items-center space-x-0 mt-10">
-                     <a href={selectedBook.accessInfo.epub.acsTokenLink} className="text-yellow-500 hover:underline">
-                    Download EPUB
-                  </a>
+                {selectedBook.accessInfo?.pdf?.isAvailable && (
+                  <div className="absolute flex items-center space-x-0 mt-4">
+                    <a
+                      href={selectedBook.accessInfo.pdf.downloadLink}
+                      className="text-yellow-500 hover:underline block"
+                      download={`${selectedBook.volumeInfo.title}.pdf`}
+                    >
+                      Download PDF
+                    </a>
                     <Gem className="h-4 w-6 text-yellow-500" />
-            </div>
-               
-
+                  </div>
+                )}
+                {selectedBook.accessInfo?.epub?.isAvailable && (
+                  <div className="absolute flex items-center space-x-0 mt-10">
+                    <a href={selectedBook.accessInfo.epub.acsTokenLink} className="text-yellow-500 hover:underline">
+                      Download EPUB
+                    </a>
+                    <Gem className="h-4 w-6 text-yellow-500" />
+                  </div>
+                )}
+                {selectedBook.internetArchiveLink && (
+                  <div className="absolute flex items-center space-x-0 mt-16">
+                    <a
+                      href={selectedBook.internetArchiveLink}
+                      className="text-yellow-500 hover:underline"
+                      download={`${selectedBook.volumeInfo.title}.pdf`}
+                    >
+                      Download PDF from Internet Archive
+                    </a>
+                    <Gem className="h-4 w-6 text-yellow-500" />
+                  </div>
                 )}
               </div>
-           
-
             </div>
           </div>
         </div>
