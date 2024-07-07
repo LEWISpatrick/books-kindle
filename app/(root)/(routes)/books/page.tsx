@@ -36,6 +36,7 @@ const Books = () => {
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const selectedBookRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const cachedPDFs = useRef<{ [title: string]: string }>({});
 
   useEffect(() => {
     fetchBooks(selectedGenre);
@@ -71,11 +72,19 @@ const Books = () => {
   };
 
   const fetchInternetArchivePDF = async (bookTitle: string): Promise<string | null> => {
+    if (cachedPDFs.current[bookTitle]) {
+      return cachedPDFs.current[bookTitle];
+    }
     try {
       const response = await axios.get(`https://archive.org/advancedsearch.php?q=title:(${bookTitle})&fl[]=identifier&output=json`);
       const itemId = response.data.response.docs[0]?.identifier;
       if (itemId) {
-        return `https://archive.org/download/${itemId}/${itemId}.pdf`;
+        const pdfUrl = `https://archive.org/download/${itemId}/${itemId}.pdf`;
+        const pdfResponse = await axios.head(pdfUrl);
+        if (pdfResponse.status === 200) {
+          cachedPDFs.current[bookTitle] = pdfUrl;
+          return pdfUrl;
+        }
       }
       return null;
     } catch (error) {
@@ -84,8 +93,17 @@ const Books = () => {
     }
   };
 
+  const fetchMultipleSourcesPDF = async (bookTitle: string): Promise<string | null> => {
+    let pdfUrl = await fetchInternetArchivePDF(bookTitle);
+    if (!pdfUrl) {
+      // Add additional sources if needed
+      // pdfUrl = await fetchAnotherSourcePDF(bookTitle);
+    }
+    return pdfUrl;
+  };
+
   const showBookDetails = async (book: Book) => {
-    const internetArchiveLink = await fetchInternetArchivePDF(book.volumeInfo.title.toLowerCase());
+    const internetArchiveLink = await fetchMultipleSourcesPDF(book.volumeInfo.title.toLowerCase());
     setSelectedBook({ ...book, internetArchiveLink });
   };
 
