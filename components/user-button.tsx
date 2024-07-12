@@ -26,21 +26,13 @@ import { useEffect, useState } from 'react'
 export const UserButton = () => {
   const userButtonItems = [
 
-    {
-      label: 'Favorite Books',
-      href: '/favoritebooks',
-      icon: Book
-    },
+
     {
       label: 'Billing',
       href: '/payments',
       icon: CreditCard
     },
-    {
-      label: 'Settings',
-      href: '/settings',
-      icon: Settings
-    }
+    
   ]
   // Random gradient colors for Avatar
 

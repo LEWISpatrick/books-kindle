@@ -24,7 +24,6 @@ interface Book {
       acsTokenLink?: string;
     };
   };
-  internetArchiveLink?: string | null; // Allow null
 }
 
 const GOOGLE_BOOKS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY;
@@ -36,7 +35,6 @@ const Books = () => {
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const selectedBookRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const cachedPDFs = useRef<{ [title: string]: string }>({});
 
   useEffect(() => {
     fetchBooks(selectedGenre);
@@ -46,7 +44,7 @@ const Books = () => {
     axios
       .get(`https://www.googleapis.com/books/v1/volumes?q=subject:${genre}&key=${GOOGLE_BOOKS_API_KEY}`)
       .then(response => {
-        setBooks(response.data.items);
+        setBooks(response.data.items || []);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -58,7 +56,7 @@ const Books = () => {
     axios
       .get(`https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${GOOGLE_BOOKS_API_KEY}`)
       .then(response => {
-        setBooks(response.data.items);
+        setBooks(response.data.items || []);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -72,19 +70,11 @@ const Books = () => {
   };
 
   const fetchInternetArchivePDF = async (bookTitle: string): Promise<string | null> => {
-    if (cachedPDFs.current[bookTitle]) {
-      return cachedPDFs.current[bookTitle];
-    }
     try {
       const response = await axios.get(`https://archive.org/advancedsearch.php?q=title:(${bookTitle})&fl[]=identifier&output=json`);
       const itemId = response.data.response.docs[0]?.identifier;
       if (itemId) {
-        const pdfUrl = `https://archive.org/download/${itemId}/${itemId}.pdf`;
-        const pdfResponse = await axios.head(pdfUrl);
-        if (pdfResponse.status === 200) {
-          cachedPDFs.current[bookTitle] = pdfUrl;
-          return pdfUrl;
-        }
+        return `https://archive.org/download/${itemId}/${itemId}.pdf`;
       }
       return null;
     } catch (error) {
@@ -93,18 +83,29 @@ const Books = () => {
     }
   };
 
-  const fetchMultipleSourcesPDF = async (bookTitle: string): Promise<string | null> => {
-    let pdfUrl = await fetchInternetArchivePDF(bookTitle);
-    if (!pdfUrl) {
-      // Add additional sources if needed
-      // pdfUrl = await fetchAnotherSourcePDF(bookTitle);
-    }
-    return pdfUrl;
-  };
-
   const showBookDetails = async (book: Book) => {
-    const internetArchiveLink = await fetchMultipleSourcesPDF(book.volumeInfo.title.toLowerCase());
-    setSelectedBook({ ...book, internetArchiveLink });
+    let pdfLink = null ;
+
+    // Try fetching PDF link from Google Books first
+    if (book.accessInfo?.pdf?.isAvailable && book.accessInfo.pdf.downloadLink) {
+      pdfLink = book.accessInfo.pdf.downloadLink;
+    } else {
+      // If not available, try fetching from Internet Archive
+      pdfLink = await fetchInternetArchivePDF(book.volumeInfo.title.toLowerCase());
+    }
+
+    // Update selected book with PDF link
+    setSelectedBook({
+      ...book,
+      accessInfo: {
+        ...book.accessInfo,
+        pdf: {
+          ...book.accessInfo?.pdf,
+          downloadLink: pdfLink || undefined // Ensure downloadLink is never null
+        }
+      }
+    });
+    
   };
 
   const closeBookDetails = () => {
@@ -115,20 +116,6 @@ const Books = () => {
     if (searchInputRef.current) {
       searchInputRef.current.focus();
     }
-  }, []);
-
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        closeBookDetails();
-      }
-    };
-
-    document.addEventListener('keydown', handleEscape);
-
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
-    };
   }, []);
 
   return (
@@ -204,7 +191,7 @@ const Books = () => {
       </div>
       {selectedBook && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center">
-          <div ref={selectedBookRef} className="relative bg-white rounded-lg shadow-md overflow-hidden p-6 w-full max-h-full overflow-y-auto">
+          <div className="relative bg-white rounded-lg shadow-md overflow-hidden p-6 w-full max-h-full overflow-y-auto">
             <button className="absolute top-2 right-2 text-gray-600 hover:text-gray-900" onClick={closeBookDetails}>
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -242,14 +229,14 @@ const Books = () => {
                     <Gem className="h-4 w-6 text-yellow-500" />
                   </div>
                 )}
-                {selectedBook.internetArchiveLink && (
+                {selectedBook.accessInfo?.pdf?.isAvailable && (
                   <div className="absolute flex items-center space-x-0 mt-16">
                     <a
-                      href={selectedBook.internetArchiveLink}
+                      href={selectedBook.accessInfo.pdf.downloadLink}
                       className="text-yellow-500 hover:underline"
                       download={`${selectedBook.volumeInfo.title}.pdf`}
                     >
-                      Download PDF from Internet Archive
+                      Download PDF
                     </a>
                     <Gem className="h-4 w-6 text-yellow-500" />
                   </div>
