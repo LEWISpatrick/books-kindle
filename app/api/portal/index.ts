@@ -1,4 +1,4 @@
-// pages/api/payments.ts
+// /api/portal/route.ts
 import { auth } from '@/auth';
 import { db } from '@/lib/db';
 import { stripe } from '@/lib/stripe';
