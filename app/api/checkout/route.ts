@@ -26,6 +26,11 @@ export async function POST(req: Request) {
         userId: user.user.id,
       },
     });
+    let stripePurchase = await db.purchase.findFirst({
+      where: {
+        userId: user.user.id,
+      },
+    });
 
     if (!stripeCustomer) {
       // Create a new Stripe customer
@@ -42,7 +47,11 @@ export async function POST(req: Request) {
       });
     }
 
-  
+    if (stripePurchase) {
+      console.error('User has already purchased the item.');
+      return new NextResponse('Already Purchased', { status: 400 });
+    }
+
     // Create a checkout session for a one-time payment
     const stripeSession = await stripe.checkout.sessions.create({
       success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
