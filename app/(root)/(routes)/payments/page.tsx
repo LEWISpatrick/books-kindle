@@ -1,48 +1,39 @@
-import { auth } from '@/auth'
-import { db } from '@/lib/db'
-import { stripe } from '@/lib/stripe'
-import { NextResponse } from 'next/server'
+// app/(root)/(routes)/payments/page.tsx
+import { useState } from 'react';
 
-export async function POST(req: Request) {
+export default function PaymentsPage() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [url, setUrl] = useState('');
+
+  const handlePayment = async () => {
+    setLoading(true);
+    setError('');
     try {
-      const user = await auth()
-  
-      if (!user || !user.user.id) {
-        console.error('Authentication failed or user ID is missing.')
-        return new NextResponse('Unauthorized', { status: 401 })
+      const response = await fetch('/api/portal', {
+        method: 'POST',
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setUrl(data.url);
+        window.location.href = data.url;
+      } else {
+        setError(data.message);
       }
-  
-      const appUrl = process.env.APP_URL
-      if (!appUrl) {
-        console.error('APP_URL is not defined')
-        return new NextResponse('Internal Server Error', { status: 500 })
-      }
-  
-      // Check if the user has an existing Stripe customer
-      const stripeCustomer = await db.stripeCustomer.findFirst({
-        where: {
-          userId: user.user.id
-        }
-      })
-  
-      // If Stripe customer exists, redirect to the Stripe billing portal
-      if (stripeCustomer) {
-        const stripeSession = await stripe.billingPortal.sessions.create({
-          customer: stripeCustomer.stripeCustomerId,
-          return_url: appUrl
-        })
-  
-        console.log(`Redirecting to Stripe billing portal: ${stripeSession.url}`)
-        return new NextResponse(JSON.stringify({ url: stripeSession.url }), { status: 200 })
-      }
-    } catch (error) {
-        console.error('Error processing the purchase:', error)
-        return new NextResponse('Internal Server Error', { status: 500 })
-      }
-      return (
-        <div>
-          <h1>Payments</h1>
-        </div>
-      )
-}
+    } catch (err) {
+      setError('Something went wrong');
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  return (
+    <div>
+      <h1>Payments Page</h1>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <button onClick={handlePayment} disabled={loading}>
+        {loading ? 'Processing...' : 'Go to Stripe Billing Portal'}
+      </button>
+    </div>
+  );
+}
