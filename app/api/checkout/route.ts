@@ -38,8 +38,8 @@ export async function POST(req: Request) {
 
     // Create a checkout session for a one-time payment
     const stripeSession = await stripe.checkout.sessions.create({
-      success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: appUrl,
+      success_url: `/success`,
+      cancel_url: `/failed`,
       payment_method_types: ['card'],
       mode: 'payment',
       billing_address_collection: 'auto',
