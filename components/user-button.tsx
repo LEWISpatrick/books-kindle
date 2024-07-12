@@ -86,14 +86,16 @@ export const UserButton = () => {
             <DropdownMenuSeparator />
             {/* Main Icons */}
             <DropdownMenuGroup>
-              {userButtonItems.map((item, index) => (
-                <DropdownMenuItem key={index}>
-                  <Link href={item.href} className="flex">
-                    <item.icon className="mr-2 mt-0.5 h-4 w-4" />
-                    <span>{item.label}</span>
-                  </Link>
+           
+                <DropdownMenuItem >
+                 
+                  <form className="flex" method="POST" action="/create-customer-portal-session">
+  <button type="submit">
+  <CreditCard className="mr-2 mt-0.5 h-4 w-4" />
+    <span>Manage billing</span>
+  </button>
+</form>
                 </DropdownMenuItem>
-              ))}
             </DropdownMenuGroup>
             {/* Logout Button */}
             <DropdownMenuSeparator />
