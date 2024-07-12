@@ -1,4 +1,4 @@
-// app/(root)/(routes)/payments/page.tsx
+'use client'
 import { useState } from 'react';
 
 export default function PaymentsPage() {
