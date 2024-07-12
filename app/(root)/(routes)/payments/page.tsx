@@ -39,5 +39,10 @@ export async function POST(req: Request) {
         console.error('Error processing the purchase:', error)
         return new NextResponse('Internal Server Error', { status: 500 })
       }
+      return (
+        <div>
+          <h1>Payments</h1>
+        </div>
+      )
 }
 
