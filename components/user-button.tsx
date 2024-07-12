@@ -89,12 +89,12 @@ export const UserButton = () => {
            
                 <DropdownMenuItem >
                  
-                  <form className="flex" method="POST" action="/create-customer-portal-session">
+                  <Link className="flex"  href='/payments'>
   <button type="submit">
   <CreditCard className="mr-2 mt-0.5 h-4 w-4" />
     <span>Manage billing</span>
   </button>
-</form>
+</Link>
                 </DropdownMenuItem>
             </DropdownMenuGroup>
             {/* Logout Button */}
