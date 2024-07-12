@@ -42,17 +42,7 @@ export async function POST(req: Request) {
       });
     }
 
-    if (req.url?.endsWith('/portal')) {
-      // Redirect to the Stripe billing portal
-      const stripeSession = await stripe.billingPortal.sessions.create({
-        customer: stripeCustomer.stripeCustomerId,
-        return_url: appUrl,
-      });
-
-      console.log(`Redirecting to Stripe billing portal: ${stripeSession.url}`);
-      return new NextResponse(JSON.stringify({ url: stripeSession.url }), { status: 200 });
-    }
-
+  
     // Create a checkout session for a one-time payment
     const stripeSession = await stripe.checkout.sessions.create({
       success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
