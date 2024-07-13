@@ -54,8 +54,8 @@ export async function POST(req: Request) {
     
     // Create a checkout session for a one-time payment
     const stripeSession = await stripe.checkout.sessions.create({
-      success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: appUrl,
+      success_url: `/`,
+      cancel_url: `/`,
       payment_method_types: ['card'],
       mode: 'payment',
       billing_address_collection: 'auto',
@@ -66,23 +66,23 @@ export async function POST(req: Request) {
             currency: 'USD',
             product_data: {
               name: 'Books Kindle Package',
-              description: 'Ultimate package for book lovers'
+              description: 'Ultimate package for book lovers',
             },
-            unit_amount: 2999
+            unit_amount: 2999,
           },
-          quantity: 1
-        }
+          quantity: 1,
+        },
       ],
       metadata: {
-        userId: user.user.id
-      }
-    })
+        userId: user.user.id,
+      },
+    });
 
-    console.log('Stripe checkout session created:', stripeSession.id)
+    console.log('Stripe checkout session created:', stripeSession.id);
 
-    return new NextResponse(JSON.stringify({ url: stripeSession.url }), { status: 200 })
+
+    return new NextResponse(JSON.stringify({ url: stripeSession.url }), { status: 200 });
   } catch (error) {
-    console.error('Error processing the purchase:', error)
-    return new NextResponse('Internal Server Error', { status: 500 })
-  }
-}
+    console.error('Error processing the purchase:', error);
+    return new NextResponse('Internal Server Error', { status: 500 });
+  }}
