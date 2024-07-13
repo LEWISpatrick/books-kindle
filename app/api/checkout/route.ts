@@ -59,7 +59,7 @@ export async function POST(req: Request) {
       payment_method_types: ['card'],
       mode: 'payment',
       billing_address_collection: 'auto',
-      customer: stripeCustomer.stripeCustomerId,
+      customer_email: user?.user.email!,
       line_items: [
         {
           price_data: {
