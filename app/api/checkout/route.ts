@@ -54,8 +54,9 @@ export async function POST(req: Request) {
     
     // Create a checkout session for a one-time payment
     const stripeSession = await stripe.checkout.sessions.create({
-      success_url: `/`,
-      cancel_url: `/`,
+      success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${appUrl}/cancel`,
+
       payment_method_types: ['card'],
       mode: 'payment',
       billing_address_collection: 'auto',
@@ -68,7 +69,7 @@ export async function POST(req: Request) {
               name: 'Books Kindle Package',
               description: 'Ultimate package for book lovers',
             },
-            unit_amount: 2999,
+            unit_amount: 1999,
           },
           quantity: 1,
         },

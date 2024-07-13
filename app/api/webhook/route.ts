@@ -59,12 +59,11 @@ export async function POST(req: Request) {
     await db.purchase.create({
       data: {
         userId,
-        amount: session.amount_total,
-        stripeCustomerId: stripeCustomer.id,
+        amount: session.amount_total / 100, // Amount is in cents, so divide by 100 to get USD
+        stripeCustomerId: stripeCustomer.stripeCustomerId, // Updated to match your schema
         createdAt: new Date(),
       }
     })
-
     console.log('Purchase recorded in the database for user:', userId)
   }
 
