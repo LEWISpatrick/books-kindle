@@ -66,31 +66,23 @@ export async function POST(req: Request) {
             currency: 'USD',
             product_data: {
               name: 'Books Kindle Package',
-              description: 'Ultimate package for book lovers',
+              description: 'Ultimate package for book lovers'
             },
-            unit_amount: 2999,
+            unit_amount: 2999
           },
-          quantity: 1,
-        },
+          quantity: 1
+        }
       ],
       metadata: {
-        userId: user.user.id,
-      },
-    });
+        userId: user.user.id
+      }
+    })
 
-    console.log('Stripe checkout session created:', stripeSession.id);
+    console.log('Stripe checkout session created:', stripeSession.id)
 
-    // Save the purchase to the database
-    await db.purchase.create({
-      data: {
-        userId: user.user.id,
-        stripeCustomerId: stripeCustomer.stripeCustomerId,
-        amount: 29.99, // Assuming the amount is in USD and matches the unit_amount
-      },
-    });
-
-    return new NextResponse(JSON.stringify({ url: stripeSession.url }), { status: 200 });
+    return new NextResponse(JSON.stringify({ url: stripeSession.url }), { status: 200 })
   } catch (error) {
-    console.error('Error processing the purchase:', error);
-    return new NextResponse('Internal Server Error', { status: 500 });
-  }}
+    console.error('Error processing the purchase:', error)
+    return new NextResponse('Internal Server Error', { status: 500 })
+  }
+}
