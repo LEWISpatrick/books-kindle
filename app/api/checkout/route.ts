@@ -4,6 +4,7 @@ import { auth } from '@/auth';
 import { db } from '@/lib/db';
 import { stripe } from '@/lib/stripe';
 import { NextResponse } from 'next/server';
+import error from 'next/error';
 
 export async function POST(req: Request) {
   try {
@@ -46,12 +47,8 @@ export async function POST(req: Request) {
         },
       });
     }
-
-    if (stripePurchase) {
-      console.error('User has already purchased the item.');
-      return new NextResponse('Already Purchased', { status: 400 });
-    }
-
+  if (stripePurchase) {
+    
     // Create a checkout session for a one-time payment
     const stripeSession = await stripe.checkout.sessions.create({
       success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
@@ -90,9 +87,7 @@ export async function POST(req: Request) {
     });
 
     return new NextResponse(JSON.stringify({ url: stripeSession.url }), { status: 200 });
-  } catch (error) {
+  }} catch (error) {
     console.error('Error processing the purchase:', error);
     return new NextResponse('Internal Server Error', { status: 500 });
-  }
-}
-  
+  }}
