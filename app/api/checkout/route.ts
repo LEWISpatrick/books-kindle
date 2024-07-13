@@ -47,7 +47,10 @@ export async function POST(req: Request) {
         },
       });
     }
-  if (stripePurchase) {
+  if (stripePurchase) { 
+    console.error('Already purchased!');
+    return new NextResponse('Unauthorized', { status: 401 });
+  }
     
     // Create a checkout session for a one-time payment
     const stripeSession = await stripe.checkout.sessions.create({
@@ -87,7 +90,7 @@ export async function POST(req: Request) {
     });
 
     return new NextResponse(JSON.stringify({ url: stripeSession.url }), { status: 200 });
-  }} catch (error) {
+  } catch (error) {
     console.error('Error processing the purchase:', error);
     return new NextResponse('Internal Server Error', { status: 500 });
   }}
