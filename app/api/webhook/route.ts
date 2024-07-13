@@ -5,6 +5,7 @@ import { db } from '@/lib/db'
 import { stripe } from '@/lib/stripe'
 
 export async function POST(req: Request) {
+  console.log('webhook ran')
   const body = await req.text()
   const signature = headers().get('Stripe-Signature') as string
 
