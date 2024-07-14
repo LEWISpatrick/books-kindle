@@ -10,12 +10,12 @@ export function AlertDemo() {
           Heads up!
         </AlertTitle>
         <AlertDescription>
-          The first 50 clients (28 Left) will get an exclusive {' '}
+          The first 15 clients (3 Left) will get an exclusive {' '}
           <a
             href="#pricing"
             className="text-primary transition duration-300 hover:underline"
           >
-            50%
+            70%
           </a> discount!
         </AlertDescription>
       </Alert>

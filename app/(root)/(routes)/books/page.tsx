@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { Sparkles, Search, Gem } from 'lucide-react';
+import { auth } from '@/auth';
+import { db } from '@/lib/db';
 
 interface Book {
   id: string;
@@ -35,6 +37,9 @@ const Books = () => {
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const selectedBookRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const [purchaseStatus, setPurchaseStatus] = useState<boolean | null>(null);
+
 
   useEffect(() => {
     fetchBooks(selectedGenre);
@@ -71,20 +76,23 @@ const Books = () => {
 
   const fetchInternetArchivePDF = async (bookTitle: string): Promise<string | null> => {
     try {
-      const response = await axios.get(`https://archive.org/advancedsearch.php?q=title:(${bookTitle})&fl[]=identifier&output=json`);
-      const itemId = response.data.response.docs[0]?.identifier;
-      if (itemId) {
-        return `https://archive.org/download/${itemId}/${itemId}.pdf`;
+      const response = await axios.get(`https://archive.org/advancedsearch.php?q=title:(${encodeURIComponent(bookTitle)})&fl[]=identifier&output=json`);
+      if (response.data && response.data.response && response.data.response.docs.length > 0) {
+        const itemId = response.data.response.docs[0].identifier;
+        if (itemId) {
+          return `https://archive.org/download/${itemId}/${itemId}.pdf`;
+        }
       }
+      console.error('No items found in Internet Archive for title:', bookTitle);
       return null;
     } catch (error) {
       console.error('Error fetching Internet Archive PDF:', error);
       return null;
     }
   };
-
+  
   const showBookDetails = async (book: Book) => {
-    let pdfLink = null ;
+    let pdfLink = null;
 
     // Try fetching PDF link from Google Books first
     if (book.accessInfo?.pdf?.isAvailable && book.accessInfo.pdf.downloadLink) {
@@ -101,11 +109,10 @@ const Books = () => {
         ...book.accessInfo,
         pdf: {
           ...book.accessInfo?.pdf,
-          downloadLink: pdfLink || undefined // Ensure downloadLink is never null
-        }
-      }
+          downloadLink: pdfLink || undefined, // Ensure downloadLink is never null
+        },
+      },
     });
-    
   };
 
   const closeBookDetails = () => {
@@ -192,7 +199,7 @@ const Books = () => {
       {selectedBook && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center">
           <div className="relative bg-white rounded-lg shadow-md overflow-hidden p-6 w-full max-h-full overflow-y-auto">
-            <button className="absolute top-2 right-2 text-gray-600 hover:text-gray-900" onClick={closeBookDetails}>
+            <button className="absolute top-2 right-2  bg-black rounded-lg" onClick={closeBookDetails}>
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -215,6 +222,7 @@ const Books = () => {
                       href={selectedBook.accessInfo.pdf.downloadLink}
                       className="text-yellow-500 hover:underline block"
                       download={`${selectedBook.volumeInfo.title}.pdf`}
+
                     >
                       Download PDF
                     </a>
@@ -241,6 +249,19 @@ const Books = () => {
                     <Gem className="h-4 w-6 text-yellow-500" />
                   </div>
                 )}
+<div className="absolute flex items-center space-x-0 mt-32">
+  <div className="w-full max-w-xl max-h-72 aspect-video ">
+    <iframe
+      id="youtube-iframe"
+      src="https://www.youtube.com/embed/Q6jDdtbkMIU?si=YtgU89RhYiwt5-U5"
+      title="YouTube Video Player"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      className="w-full h-full rounded-[32px]"
+    ></iframe>
+  </div>
+</div>
+
+
               </div>
             </div>
           </div>

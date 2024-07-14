@@ -4,6 +4,7 @@ import { useCurrentUser } from '@/hooks/use-current-user'
 import { signOut } from 'next-auth/react'
 import Image from 'next/image'
 import { Logo } from '@/components/logo'
+import UserButton from './user-button'
 
 const sidebarPages = [
   {
@@ -35,7 +36,7 @@ export const Sidebar = ({ closeSidebar }: SidebarProps) => {
 
       <div className=" pt-3">
         <div className="space-y-4">
-          <div className="ml-2">
+          <div className="ml-3">
             <h1 className="text-xl font-semibold">Main</h1>
             {sidebarPages.map((page) => (
               <Link
@@ -52,15 +53,19 @@ export const Sidebar = ({ closeSidebar }: SidebarProps) => {
               </Link>
             ))}
           </div>
-          <div className="ml-2">
-          <h1 className="text-xl font-semibold">Account</h1>  
+          <div className="ml-3">
+          <h1 className="text-xl font-semibold mb-0">Account</h1>  
+         <div className='ml-5'>
+                    <UserButton />
 
+         </div>
           </div>
           
           {session ? (
+            <>
             <Link
               href="/register"
-              className="group flex py-2 w-full justify-start cursor-pointer rounded ml-2 font-bold text-xl"
+              className="group flex py-1 w-full justify-start cursor-pointer rounded ml-3 font-bold text-xl"
               onClick={() => {
                 Logout()
                 closeSidebar && closeSidebar()
@@ -68,6 +73,9 @@ export const Sidebar = ({ closeSidebar }: SidebarProps) => {
             >
               Logout
             </Link>
+                         
+            </>
+
           ) : (
             <Link
               href="/login"
@@ -79,6 +87,7 @@ export const Sidebar = ({ closeSidebar }: SidebarProps) => {
               </div>
             </Link>
           )}
+
         </div>
       </div>
     </div>

@@ -28,11 +28,11 @@ const Why = () => {
         <ul className="text-lg leading-relaxed">
           <li className="flex items-center mb-2">
             <FaCheckCircle className="text-green-500 mr-2" />
-            Thousands of Free Books Available
+           Thousands of Free Books Available
           </li>
           <li className="flex items-center mb-2">
             <FaCheckCircle className="text-green-500 mr-2" />
-            Thousands of Free Audiobooks Available
+            SOON:  Thousands of Free Audiobooks Available
           </li>
           <li className="flex items-center mb-2">
             <FaCheckCircle className="text-green-500 mr-2" />
@@ -46,12 +46,13 @@ const Why = () => {
       </div>
 
       {/* Right Column: Video */}
-
-          <YouTube
-            opts={videoOption}
-            videoId="8e2t4u4F5XE"
-            title="Why Books Kindle Video"
-          />
+      <iframe
+        id="youtube-iframe"
+        src="https://www.youtube.com/embed/Q6jDdtbkMIU?si=YtgU89RhYiwt5-U5"
+        title="YouTube Video Player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        className={`w-full max-w-xl max-h-72 aspect-video rounded-[32px] `}
+      ></iframe>
 
     </section>
   );

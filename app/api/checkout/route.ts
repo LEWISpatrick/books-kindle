@@ -1,66 +1,67 @@
-// pages/api/portal.ts
-import { NextApiRequest, NextApiResponse } from 'next';
-import { auth } from '@/auth';
-import { db } from '@/lib/db';
-import { stripe } from '@/lib/stripe';
-import { NextResponse } from 'next/server';
-import error from 'next/error';
+import { auth } from '@/auth'
+import { db } from '@/lib/db'
+import { stripe } from '@/lib/stripe'
+import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
   try {
-    const user = await auth();
+    const user = await auth()
 
     if (!user || !user.user.id) {
-      console.error('Authentication failed or user ID is missing.');
-      return new NextResponse('Unauthorized', { status: 401 });
+      return new NextResponse('Unauthorized', { status: 401 })
     }
 
-    const appUrl = process.env.APP_URL;
-    if (!appUrl) {
-      console.error('APP_URL is not defined');
-      return new NextResponse('Internal Server Error', { status: 500 });
-    }
-
-    // Check if the user has an existing Stripe customer
-    let stripeCustomer = await db.stripeCustomer.findFirst({
+    const existingStripeCustomer = await db.stripeCustomer.findUnique({
       where: {
-        userId: user.user.id,
-      },
-    });
-    let stripePurchase = await db.purchase.findFirst({
-      where: {
-        userId: user.user.id,
-      },
-    });
+        userId: user.user.id
+      }
+    })
 
-    if (!stripeCustomer) {
-      // Create a new Stripe customer
-      const newStripeCustomer = await stripe.customers.create({
-        email: user?.user.email!,     
-       });
+    let stripeCustomerId: string
 
-      // Save the new Stripe customer to the database
-      stripeCustomer = await db.stripeCustomer.create({
+    if (existingStripeCustomer) {
+      stripeCustomerId = existingStripeCustomer.stripeCustomerId
+    } else {
+      const customer = await stripe.customers.create({
+        email: user.user.email!
+      })
+      await db.stripeCustomer.create({
         data: {
           userId: user.user.id,
-          stripeCustomerId: newStripeCustomer.id,
-        },
-      });
+          stripeCustomerId: customer.id
+        }
+      })
+      stripeCustomerId = customer.id
     }
-  if (stripePurchase) { 
-    console.error('Already purchased!');
-    return new NextResponse('Unauthorized', { status: 401 });
-  }
-    
-    // Create a checkout session for a one-time payment
-    const stripeSession = await stripe.checkout.sessions.create({
-      success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${appUrl}/cancel`,
 
+    const stripePurchase = await db.purchase.findFirst({
+      where: {
+        userId: user.user.id
+      }
+    })
+
+    if (stripePurchase) {
+      return new NextResponse('Purchase already exists', { status: 400 })
+    }
+
+    const coupon = await stripe.coupons.create({
+      percent_off: 70,
+      duration: 'once',
+      name: 'First 15 Clients (3 Left) 70% Discount',
+    });
+
+    const stripeSession = await stripe.checkout.sessions.create({
+      success_url: process.env.APP_URL,
+      cancel_url: process.env.APP_URL,
       payment_method_types: ['card'],
       mode: 'payment',
       billing_address_collection: 'auto',
-      customer_email: user?.user.email!,
+      customer: stripeCustomerId,
+      discounts: [
+        {
+          coupon: coupon.id,
+        },
+      ],
       line_items: [
         {
           price_data: {
@@ -69,21 +70,30 @@ export async function POST(req: Request) {
               name: 'Books Kindle Package',
               description: 'Ultimate package for book lovers',
             },
-            unit_amount: 1999,
+            unit_amount: 7000, // Original price in cents ($66.67)
+          },
+          quantity: 1,
+        },
+        {
+          price_data: {
+            currency: 'USD',
+            product_data: {
+              name: 'Stripe Fee',
+            },
+            unit_amount: 303, // Fee amount in cents ($3.03)
           },
           quantity: 1,
         },
       ],
       metadata: {
         userId: user.user.id,
+        stripeCustomerId: stripeCustomerId,
       },
-    });
+    })
 
-    console.log('Stripe checkout session created:', stripeSession.id);
-
-
-    return new NextResponse(JSON.stringify({ url: stripeSession.url }), { status: 200 });
+    return new NextResponse(JSON.stringify({ url: stripeSession.url }))
   } catch (error) {
-    console.error('Error processing the purchase:', error);
-    return new NextResponse('Internal Server Error', { status: 500 });
-  }}
+    console.log('[STRIPE_GET]', error)
+    return new NextResponse('Internal Error', { status: 500 })
+  }
+}

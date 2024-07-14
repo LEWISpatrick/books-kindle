@@ -1,4 +1,4 @@
-const audibooksLayout = ({ children }: { children: React.ReactNode }) => {
+const ConvertLayout = ({ children }: { children: React.ReactNode }) => {
     return (
       <main className="max-w-6xl w-full flex items-center justify-center px-6">
         {children}
@@ -6,5 +6,5 @@ const audibooksLayout = ({ children }: { children: React.ReactNode }) => {
     )
   }
   
-  export default audibooksLayout
+  export default ConvertLayout
   

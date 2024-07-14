@@ -29,11 +29,11 @@ export const tiers = [
   },
   {
     name: 'Books Kindle Premium',
-    priceBefore: '$59.99',
-    price: '29.99',
+    priceBefore: '$74.99',
+    price: '19.99',
     features: [
       'Thousands of Free Books',
-      'Thousands of Free Audiobooks',
+      'SOON: Thousands of Free Audiobooks',
       'No Regional Restrictions',
       'Lifetime updates',
       'Customer Support',
