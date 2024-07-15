@@ -4,6 +4,7 @@ import * as React from 'react'
 import * as AvatarPrimitive from '@radix-ui/react-avatar'
 
 import { cn } from '@/lib/utils'
+import { Gem } from 'lucide-react'
 
 const Avatar = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
@@ -28,7 +29,10 @@ const AvatarImage = React.forwardRef<
     ref={ref}
     className={cn('aspect-square h-full w-full', className)}
     {...props}
-  />
+  >
+
+  </AvatarPrimitive.Image>
+
 ))
 AvatarImage.displayName = AvatarPrimitive.Image.displayName
 

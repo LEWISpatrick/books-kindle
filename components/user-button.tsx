@@ -14,6 +14,7 @@ import { signOut } from 'next-auth/react'
 import {
   Book,
   CreditCard,
+  Gem,
   LayoutDashboard,
   LogOut,
   Settings
@@ -72,6 +73,7 @@ export const UserButton = () => {
             {/* User Avatar / Logo */}
             <Avatar className="cursor-pointer">
               <AvatarImage src={session.image ? session.image : ''} alt="pfp" />
+
               <AvatarFallback className="bg-gradient-to-r from-red-500 to-orange-500"></AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>

@@ -61,6 +61,13 @@ const FileUploadForm = () => {
           </a>
         </p>
       )}
+      <div className='text-center'>
+      <h2> For Now use this: </h2>
+      <a href="https://cloudconvert.com/azw3-to-pdf/" className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer">
+            pdf - azw3 converter
+          </a>
+      </div>
+     
     </div>
   );
 };

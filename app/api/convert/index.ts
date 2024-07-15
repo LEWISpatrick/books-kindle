@@ -16,9 +16,10 @@ export const config = {
 };
 
 const convertPdfToAzw3 = async (pdfPath: string, azw3Path: string) => {
-  const command = `ebook-convert ${pdfPath} ${azw3Path}`;
+  const command = `/Applications/calibre.app/Contents/MacOS/ebook-convert ${pdfPath} ${azw3Path}`;
   await execPromise(command);
 };
+
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') {
