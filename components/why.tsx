@@ -48,7 +48,7 @@ const Why = () => {
       {/* Right Column: Video */}
       <iframe
         id="youtube-iframe"
-        src="https://www.youtube.com/embed/Q6jDdtbkMIU?si=YtgU89RhYiwt5-U5"
+        src="https://youtu.be/8e2t4u4F5XE"
         title="YouTube Video Player"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         className={`w-full max-w-xl max-h-72 aspect-video rounded-[32px] `}
